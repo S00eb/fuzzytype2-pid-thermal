@@ -83,17 +83,17 @@ Dua variabel input (suhu & cahaya) dipetakan ke 3 himpunan linguistik: `LOW`, `M
 
 ### Type Reduction (Karnik-Mendel)
 
-$$y_{upper} = \frac{\sum w_U \cdot g}{\sum w_U}, \quad y_{lower} = \frac{\sum w_L \cdot g}{\sum w_L}$$
-
-$$\text{fuzzy\_gain} = \frac{y_{upper} + y_{lower}}{2}$$
+y_upper = Σ(wU · g) / Σ(wU)
+y_lower = Σ(wL · g) / Σ(wL)
+fuzzy_gain = (y_upper + y_lower) / 2
 
 ### Adaptive Setpoint
 
-$$\text{adaptive\_sp} = 50 + (500 - \text{cahaya}) \times 0.02 \quad (°C)$$
+adaptive_sp = 50 + (500 - cahaya) × 0.02  [°C]
 
 ### Sinyal Kendali PID
 
-$$U = \text{fuzzy\_gain} \times \left(K_p \cdot e + K_i \int e \, dt + K_d \frac{de}{dt}\right)$$
+U = fuzzy_gain × (Kp·e + Ki·∫e dt + Kd·de/dt)
 
 **Parameter awal:** `Kp = 4.0`, `Ki = 0.02`, `Kd = 1.0` | **Saturasi output:** 0–999
 

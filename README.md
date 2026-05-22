@@ -1,12 +1,12 @@
 # fuzzy-heatkeeper
-# 🌡️ IT2-FuzzyPID Thermal Management — PLTS Inverter SIL Simulation
+# IT2-FuzzyPID Thermal Management — PLTS Inverter SIL Simulation
 
 > **Evaluasi Tengah Semester — Pemrograman Kontroller**
 > Kelompok 9 | Prodi D4 Teknologi Rekayasa Instrumentasi | Institut Teknologi Sepuluh Nopember | 2026
 
 ---
 
-## 📌 Deskripsi Proyek
+## Deskripsi Proyek
 
 Repositori ini berisi implementasi lengkap sistem **manajemen termal real-time berbasis Interval Type-2 Fuzzy-PID** untuk inverter Panel Listrik Tenaga Surya (PLTS), yang divalidasi melalui pendekatan **Software-in-the-Loop (SIL)** menggunakan Proteus 8 Professional dan mikrokontroler virtual **STM32F401VE**.
 
@@ -14,7 +14,7 @@ Sistem ini dirancang untuk menjawab 15 *research gap* dari literatur jurnal inte
 
 ---
 
-## ✨ Fitur Utama
+## Fitur Utama
 
 - **Interval Type-2 Fuzzy Logic** dengan mekanisme *Footprint of Uncertainty* (FOU) untuk menangani ketidakpastian pembacaan sensor secara otomatis
 - **Adaptive Setpoint** yang menyesuaikan target suhu secara dinamis berdasarkan intensitas iradiasi matahari (sensor LDR)
@@ -27,7 +27,7 @@ Sistem ini dirancang untuk menjawab 15 *research gap* dari literatur jurnal inte
 
 ---
 
-## 🏗️ Arsitektur Sistem
+## Arsitektur Sistem
 
 ```
 Panel Surya → Inverter PLTS → Disipasi Panas
@@ -59,7 +59,7 @@ Panel Surya → Inverter PLTS → Disipasi Panas
 
 ---
 
-## ⚙️ Spesifikasi Mikrokontroler
+## Spesifikasi Mikrokontroler
 
 | Parameter | Nilai |
 |---|---|
@@ -73,7 +73,7 @@ Panel Surya → Inverter PLTS → Disipasi Panas
 
 ---
 
-## 🔬 Algoritma: Interval Type-2 Fuzzy-PID
+## Algoritma: Interval Type-2 Fuzzy-PID
 
 ### Fuzzifikasi
 Dua variabel input (suhu & cahaya) dipetakan ke 3 himpunan linguistik: `LOW`, `MEDIUM`, `HIGH`, masing-masing dengan **Upper MF** dan **Lower MF** membentuk FOU.
@@ -99,7 +99,7 @@ U = fuzzy_gain × (Kp·e + Ki·∫e dt + Kd·de/dt)
 
 ---
 
-## 📊 Hasil Pengujian Simulasi
+## Hasil Pengujian Simulasi
 
 ### Kondisi Normal (T = 33,9°C, L = 369 Lux)
 - Adaptive setpoint: **52,62°C**
@@ -118,26 +118,26 @@ U = fuzzy_gain × (Kp·e + Ki·∫e dt + Kd·de/dt)
 
 ---
 
-## 📁 Struktur Repositori
+## Struktur Repositori
 
 ```
 ├── firmware/
 │   ├── Core/
 │   │   ├── Src/
-│   │   │   ├── main.c              # Loop utama & task scheduling
-│   │   │   ├── it2_fuzzy_pid.c     # Implementasi algoritma IT2 Fuzzy-PID
-│   │   │   └── lcd_i2c.c           # Driver LCD via PCF8574
+│   │   │   ├── main.c              
+│   │   │   ├── it2_fuzzy_pid.c  
+│   │   │   └── lcd_i2c.c          
 │   │   └── Inc/
 │   │       ├── it2_fuzzy_pid.h
 │   │       └── lcd_i2c.h
 │   └── output/
-│       └── firmware.hex            # File hex untuk Proteus
+│       └── firmware.hex            
 ├── proteus/
-│   └── thermal_management.pdsprj  # Skema rangkaian Proteus
+│   └── thermal_management.pdsprj  
 ├── gnuplot/
 │   ├── data/
-│   │   └── log_data.csv            # Data log dari Virtual Terminal
-│   └── plot_response.gp            # Script GNUPlot
+│   │   └── log_data.csv           
+│   └── plot_response.gp         
 ├── docs/
 │   ├── block_diagram.png
 │   ├── flowchart.png
@@ -147,7 +147,7 @@ U = fuzzy_gain × (Kp·e + Ki·∫e dt + Kd·de/dt)
 
 ---
 
-## 🚀 Cara Menjalankan Simulasi
+##  Cara Menjalankan Simulasi
 
 1. **Clone repositori ini**
    ```bash
@@ -172,7 +172,7 @@ U = fuzzy_gain × (Kp·e + Ki·∫e dt + Kd·de/dt)
 
 ---
 
-## 📚 Referensi Jurnal Utama
+##  Referensi Jurnal Utama
 
 Sistem ini dibangun berdasarkan sintesis 15 jurnal internasional bereputasi (Scopus/WoS, 2021–2026), antara lain:
 
@@ -186,7 +186,7 @@ Sistem ini dibangun berdasarkan sintesis 15 jurnal internasional bereputasi (Sco
 
 ---
 
-## 👨‍💻 Tim Pengembang
+## Tim Pengembang
 
 | Nama | NRP |
 |---|---|
@@ -201,7 +201,7 @@ Departemen Teknik Instrumentasi, Fakultas Vokasi
 
 ---
 
-## 📄 Lisensi
+## Lisensi
 
 Proyek ini dibuat untuk keperluan akademik (Evaluasi Tengah Semester). Penggunaan ulang kode untuk tujuan pembelajaran diperbolehkan dengan mencantumkan atribusi kepada tim pengembang.
 

@@ -686,82 +686,50 @@ Virtual Terminal Proteus terhubung ke pin PA2 (TX) dan PA3 (RX) dengan konfigura
 Pengujian dilakukan dengan mengubah nilai pembacaan sensor secara interaktif pada saat simulasi berjalan. Tiga skenario diuji untuk memverifikasi respons algoritma kendali pada kondisi yang berbeda.
 
 % ----------------------------------------------------------
-\subsubsection*{3.1 Kondisi Operasi Normal ($T < 50^\circ\text{C}$)}
+\subsubsection*{3.1 Respons Sistem pada Kondisi Beban Menengah}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=17cm]{runtampilanall_normal.png}
-    \caption{Tampilan keseluruhan simulasi pada kondisi suhu normal ($T = 33{,}9^\circ\text{C}$).}
+    \includegraphics[width=16cm]{runtampilanall_normal.png}
+    \caption{Tampilan keseluruhan simulasi pada kondisi operasi aman ($T = 77{,}2^\circ\text{C}$).}
     \label{fig:run_normal}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=13cm]{vmnormal.png}
-    \caption{Virtual Terminal dan Oscilloscope pada kondisi suhu normal.}
+    \includegraphics[width=12cm]{vmnormal.png}
+    \caption{Virtual Terminal dan Oscilloscope pada kondisi operasi aman.}
     \label{fig:vm_normal}
 \end{figure}
 
-Pada pengujian pertama, sensor suhu LM35 menunjukkan pembacaan $T = 33{,}9^\circ\text{C}$ dan sensor cahaya LDR menunjukkan $L = 369\text{ Lux}$. Berdasarkan logika \textit{adaptive setpoint}, nilai \textit{setpoint} suhu dihitung sebagai:
+Pada pengujian pertama, sensor suhu LM35 menunjukkan pembacaan $T = 77{,}2^\circ\text{C}$ dan sensor cahaya LDR menunjukkan $L = 181\text{ Lux}$ (kondisi redup/mendung). Berdasarkan logika \textit{adaptive setpoint}, nilai \textit{setpoint} target suhu dihitung sebagai:
 \begin{equation}
-    \text{adaptive\_sp} = 50 + (500 - 369) \times 0{,}02 = 52{,}62^\circ\text{C}
+    \text{adaptive\_sp} = 50 + (500 - 181) \times 0{,}02 = 56{,}38^\circ\text{C}
 \end{equation}
 
-Karena suhu aktual ($33{,}9^\circ\text{C}$) masih jauh di bawah \textit{setpoint} adaptif ($52{,}62^\circ\text{C}$), \textit{error} kendali bernilai negatif. Akibatnya, keluaran kendali dijaga tetap rendah. Nilai PWM tercatat pada 337 dengan estimasi tegangan motor $V = 4{,}0\text{V}$. Karena PWM $\leq 350$, sistem mengaktifkan LED Hijau. Pada \textit{Virtual Oscilloscope}, bentuk gelombang PWM memperlihatkan \textit{duty cycle} sekitar $33{,}7\%$, yang berarti kipas berputar pada kecepatan rendah.
+Suhu aktual ($77{,}2^\circ\text{C}$) telah melewati \textit{setpoint} adaptif ($56{,}38^\circ\text{C}$), menghasilkan \textit{error} positif sebesar $20{,}82^\circ\text{C}$. Namun, karena intensitas cahaya sangat rendah, \textit{Fuzzy Logic} menyimpulkan bahwa tidak ada radiasi panas eksternal, sehingga keluaran kendali dijaga pada tingkat moderat. Nilai PWM tercatat pada angka 306 dengan estimasi tegangan motor sebesar $V = 3{,}6\text{V}$. Karena parameter PWM $\leq 350$, sistem tetap mempertahankan indikator LED Hijau (Status Aman). Pada \textit{Virtual Oscilloscope}, bentuk gelombang memperlihatkan \textit{duty cycle} sebesar $30{,}6\%$, yang berarti kipas pendingin berputar pada kecepatan sedang untuk menjaga sirkulasi secara efisien.
 
 % ----------------------------------------------------------
-\subsubsection*{3.2 Kondisi Beban Puncak ($T > 50^\circ\text{C}$)}
+\subsubsection*{3.2 Respons Sistem pada Kondisi Beban Kritis}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=17cm]{runtampilanall_bahaya.png}
-    \caption{Tampilan keseluruhan simulasi pada kondisi suhu kritis ($T = 74{,}9^\circ\text{C}$).}
+    \includegraphics[width=16cm]{runtampilanall_bahaya.png}
+    \caption{Tampilan keseluruhan simulasi pada kondisi suhu kritis ($T = 98{,}3^\circ\text{C}$).}
     \label{fig:run_bahaya}
 \end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=13cm]{vmbahaya.png}
+    \includegraphics[width=12cm]{vmbahaya.png}
     \caption{Virtual Terminal dan Oscilloscope pada kondisi suhu kritis.}
     \label{fig:vm_bahaya}
 \end{figure}
 
-Pada pengujian kedua, sensor suhu dinaikkan hingga $T = 74{,}9^\circ\text{C}$ dengan intensitas cahaya $L = 749\text{ Lux}$. Nilai \textit{setpoint} adaptif dihitung menjadi:
-\begin{equation}
-    \text{adaptive\_sp} = 50 + (500 - 749) \times 0{,}02 = 45{,}02^\circ\text{C}
-\end{equation}
+Pada pengujian kedua, kondisi beban puncak didemonstrasikan dengan mensimulasikan kenaikan suhu drastis hingga menyentuh batas kritis $T = 98{,}3^\circ\text{C}$, dengan intensitas cahaya tetap di $L = 181\text{ Lux}$. Pada kondisi ini, nilai \textit{setpoint} adaptif tetap bertahan di angka $56{,}38^\circ\text{C}$.
 
-\textit{Error} kendali bernilai sangat besar dan positif ($74{,}9 - 45{,}02 = 29{,}88^\circ\text{C}$). Keluaran PID yang diperkuat oleh \textit{fuzzy gain} menghasilkan nilai PWM yang sangat tinggi, tercatat berfluktuasi antara 853 hingga 999. LED Merah aktif secara konsisten karena PWM $> 350$. Pada \textit{Virtual Oscilloscope}, gelombang PWM menunjukkan \textit{duty cycle} mendekati 100\%, memaksa kipas berputar pada kecepatan maksimum.
+Hal ini menyebabkan \textit{error} kendali bernilai sangat besar dan positif ($98{,}3 - 56{,}38 = 41{,}92^\circ\text{C}$). Sebagai respons, keluaran PID yang diperkuat oleh komputasi \textit{Fuzzy Gain} memberikan hentakan daya keluaran yang signifikan untuk membuang panas. Nilai PWM tercatat melonjak tinggi ke angka 619, dengan estimasi tegangan suplai motor mencapai $V = 7{,}4\text{V}$. Indikator peringatan berubah seketika menjadi LED Merah yang menyala secara konsisten karena batas aman (PWM $> 350$) telah terlampaui. Pada \textit{Virtual Oscilloscope}, pelebaran gelombang pulsa PWM (\textit{Duty Cycle}) terlihat sangat jelas hingga mencapai $61{,}9\%$. Keluaran ekstrem ini memaksa kipas berputar kencang guna segera mendisipasi panas berlebih dari \textit{heatsink} dan mencegah kerusakan fisik pada komponen inverter.
 
-% ----------------------------------------------------------
-\subsubsection*{3.3 Respons Transisi}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=16cm]{sebelum.png}
-    \caption{Kondisi beban tinggi sebelum transisi ($T = 67{,}0^\circ\text{C}$).}
-    \label{fig:transisi_awal}
-\end{figure}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=16cm]{sesudah.png}
-    \caption{Respons seketika sistem setelah suhu diturunkan mendadak ($T = 29{,}0^\circ\text{C}$).}
-    \label{fig:transisi_akhir}
-\end{figure}
-Sistem mendemonstrasikan kapabilitas pemulihan (\textit{recovery}) yang sangat responsif ketika terjadi perubahan kondisi lingkungan secara drastis. Pengujian ini merekam momen ketika operator menurunkan nilai sensor secara mendadak dari kondisi beban tinggi menuju kondisi suhu ruangan.
-Pada awalnya (Gambar \ref{fig:transisi_awal}), sistem beroperasi pada suhu kritis $67{,}0^\circ\text{C}$ dengan intensitas cahaya $769\text{ Lux}$. Nilai \textit{adaptive setpoint} saat itu adalah:
-\begin{equation}
-    \text{adaptive\_sp} = 50 + (500 - 769) \times 0{,}02 = 44{,}62^\circ\text{C}
-\end{equation}
-
-Hal ini menghasilkan \textit{error} positif yang besar ($67{,}0 - 44{,}62 = 22{,}38^\circ\text{C}$), sehingga algoritma menghasilkan keluaran PWM yang tinggi (PWM = 850, $V = 10{,}2\text{V}$) dan LED Merah menyala.
-Kemudian, suhu diturunkan seketika menjadi $29{,}0^\circ\text{C}$ dan cahaya menjadi $339\text{ Lux}$. \textit{Setpoint} sistem langsung beradaptasi menjadi:
-\begin{equation}
-    \text{adaptive\_sp} = 50 + (500 - 339) \times 0{,}02 = 53{,}22^\circ\text{C}
-\end{equation}
-
-Perubahan mendadak ini membalikkan nilai \textit{error} menjadi sangat negatif ($29{,}0 - 53{,}22 = -24{,}22^\circ\text{C}$). Menghadapi nilai negatif ini, komponen turunan (Derivative) dan proporsional (Proportional) dari PID merespons secara instan untuk mengerem putaran kipas. 
-Seperti yang tercatat secara \textit{real-time} pada log \textit{Virtual Terminal} (Gambar \ref{fig:transisi_akhir}), nilai PWM seketika jatuh bebas dari 850 menuju angka 2 ($0{,}0\text{V}$), mematikan daya secara agresif untuk mencegah \textit{overshoot} pendinginan. Setelah \textit{error} berhasil diredam, komponen integral menstabilkan keluaran pada nilai PWM 118 ($1{,}4\text{V}$). 
-Begitu nilai PWM anjlok melintasi ambang batas 350 ke bawah, indikator \textbf{LED Merah seketika mati dan tergantikan oleh LED Hijau}. Fenomena \textit{switching} dan respons pengereman agresif ini membuktikan tingginya sensitivitas serta stabilitas \textit{loop} kendali \textit{Interval Type-2 Fuzzy-PID} pada arsitektur \textit{bare-metal} STM32.
 
 
 \subsection*{4. Data dan Plot GNUPlot}
@@ -830,6 +798,7 @@ Gambar \ref{fig:plot_3d} menyajikan grafik \textit{3D Control Surface} yang dire
 
 Topografi melengkung pada bidang permukaan warna hijau ke kuning membuktikan adanya transisi aksi kendali yang kontinu secara proporsional. Namun, terdapat patahan curam (\textit{steep gradient}) menuju area berwarna merah di mana kombinasi suhu tinggi dan cahaya terik secara instan mendorong aktuator ke kapasitas putaran puncaknya. Bentuk topografi non-linier yang mulus dan bebas dari osilasi tajam ini merupakan karakteristik utama sekaligus keunggulan matematis dari himpunan \textit{Interval Type-2 Fuzzy} (IT2-FLS) dalam menangani ketidakpastian (\textit{uncertainties}) parameter operasional inverter termal.
 
+\newpage
 \section*{D. Keunggulan Metode}
 
 Penelitian ini telah berhasil merancang dan menyimulasikan Sistem Manajemen Termal Inverter PLTS menggunakan algoritma \textit{Interval Type-2 Fuzzy-PID} (IT2 Fuzzy-PID) melalui pendekatan \textit{Software-in-the-Loop} (SIL) pada mikrokontroler STM32F401VE. Berdasarkan hasil pengujian dinamika waktu dan grafik \textit{3D control surface}, sistem terbukti mampu memberikan respons kendali yang sangat mulus (\textit{smooth transition}) dan bebas dari osilasi tajam. Algoritma ini secara dinamis mengkalibrasi kecepatan kipas pendingin dari kondisi istirahat hingga kapasitas puncak (PWM tersaturasi di atas 900) saat mendeteksi suhu kritis, serta melakukan pengereman aktuator secara instan saat terjadi penurunan suhu mendadak guna mencegah \textit{overshoot} pendinginan.
@@ -838,6 +807,7 @@ Jika dibandingkan dengan metode pada jurnal artikel acuan yang umumnya berfokus 
 
 Kontribusi orisinalitas utama dari penelitian ini terletak pada penggabungan inovatif dari konsep-konsep yang sebelumnya hanya menjadi rekomendasi \textit{future work} (penelitian lanjutan) pada berbagai literatur sebelumnya. Penelitian ini tidak hanya mengimplementasikan \textit{Interval Type-2 Fuzzy} untuk menangani ketidakpastian termal non-linier, tetapi secara pionir memadukannya dengan mekanisme \textit{Adaptive Setpoint} prediktif yang digerakkan oleh intensitas cahaya (iradiasi matahari eksternal). Pada sistem konvensional, pendinginan bersifat murni reaktif terhadap suhu absolut. Namun pada sistem yang diajukan ini, intensitas cahaya matahari digunakan untuk memprediksi potensi beban daya PLTS, sehingga sistem dapat memperketat atau melonggarkan toleransi suhu secara proaktif sebelum panas berlebih benar-benar terakumulasi. Penggabungan pendekatan prediktif-adaptif dan ketahanan \textit{Type-2 Fuzzy} ini merupakan kebaruan yang secara nyata meningkatkan efisiensi energi dan durabilitas termal inverter PLTS.
 
+\newpage
 \section*{E. Dokumentasi GitHub \& LinkedIn}
 \noindent\textbf{Tautan Repositori GitHub:} \url{https://github.com/S00eb/fuzzytype2-pid-thermal} \\
 \textbf{Unggahan LinkedIn:} \href{https://www.linkedin.com/posts/mahendradf_softwareintheloop-embeddedsystems-stm32-ugcPost-7463782181484724225-sNw3/}{LinkedIn Project Publication} \\
@@ -849,6 +819,7 @@ Kontribusi orisinalitas utama dari penelitian ini terletak pada penggabungan ino
     \label{fig:plot_3d}
 \end{figure}
 
+\newpage
 \section*{F. Kesimpulan}
 Tinjauan literatur terbaru menunjukan bahwa tren saat ini dalam pengembangan sistem kendali termal verfokus pada penggunaan algoritma cerdas yang adaptif pada mikrokontroler dengan memori terbatas dan kemampuan sistem untuk menagantisipasi secara proaktif ketidakpastian cuaca. Menjawab tantangan dari berbagai rekomendasi \textit{future work} tersebut, penelitian ini telah berhasil mengembangkan dan menyimulasikan sistem manajemen termal inverter PLTS menggunakan algoritma \textit{Interval Type-2 Fuzzy-PID} (IT2 Fuzzy-PID) pada mikrokontroler STM32F401VE. Inovasi kebaruan utama dari metode ini terletak pada penerapan \textit{Adaptive Setpoint} prediktif yang memanfaatkan pembacaan intensitas cahaya matahari eksternal guna mengantisipasi akumulasi panas berlebih sebelum terjadi secara reaktif.
 
